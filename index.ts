@@ -6,13 +6,16 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json(), urlencoded({ extended: true }));
 
-const product: { name: string; marca: string; id: number }[] = [
+const product: { name: string; brand: string; price: number; id: number }[] = [
   {
     name: "Galletitas",
-    marca: "Terrabusi",
+    brand: "Terrabusi",
+    price: 100,
     id: 123456,
   },
 ];
+
+//                   MÉTODOS:                   //
 
 // GET
 app.get("/product", (_req, res) => {
@@ -21,11 +24,11 @@ app.get("/product", (_req, res) => {
 
 // POST
 app.post("/product", (req, res) => {
-  const { name, marca } = req.body;
+  const { name, brand, price } = req.body;
   
   try {
-    if (!name || !marca) throw new Error("che, pasame el name y marca");
-    product.push({ id: new Date().getTime(), name, marca });
+    if (!name || !brand) throw new Error("che, pasame el name y marca");
+    product.push({ name, brand, price, id: new Date().getTime() });
     res.status(200).json(product.slice(-1));
   } catch (err) {
     return res.status(400).json({ message: err.message });
@@ -35,7 +38,7 @@ app.post("/product", (req, res) => {
 
 // PUT
 app.put("/product", (req, res) => {
-  const { name, marca, id } = req.body;
+  const { name, brand, id } = req.body;
   const index = product.findIndex((product) => product.id === id);
   console.log(index);
 
@@ -43,7 +46,7 @@ app.put("/product", (req, res) => {
     return res.status(400).json({message: "no se encontro el producto"});
   }
 
-  product[index] = { ...product[index], name, marca};
+  product[index] = { ...product[index], name, brand};
   res.status(200).json(product[index]);
 });
 
