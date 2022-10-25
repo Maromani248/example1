@@ -1,19 +1,21 @@
 import express from "express";
+import cors from "cors";
 import bodyParser, { urlencoded } from "body-parser";
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json(), urlencoded({ extended: true }));
 
-const product: { id: number; name: string; marca: string }[] = [
+const product: { name: string; marca: string; id: number }[] = [
   {
-    name: "mouse",
-    marca: "telefe",
+    name: "Galletitas",
+    marca: "Terrabusi",
     id: 123456,
   },
 ];
 
 // GET
-app.get("/product", (req, res) => {
+app.get("/product", (_req, res) => {
   res.status(200).json(product);
 });
 
@@ -46,8 +48,18 @@ app.put("/product", (req, res) => {
 });
 
 // DELETE
-app.delete("/product", (req, res) => {
-  res.status(200).json({ name: "maria" });
+app.delete("/product", (_req, res) => {
+  /* let productId = req.params.productId;
+
+  product.findById(productId, (err, product) => {
+    if(err res.status(400).send({message: `Error al borrar el producto: ${err}`}
+    
+    product.remove( err => {
+      if(err) res.status(400).send({message: `Error al borrar el producto: ${err}`})
+      res.status(200).send({message: 'El producto ha sido eliminado'});
+    })   
+  }) */
+  res.status(200).json({name: "maria"});
 });
 
 app.listen(3000);
