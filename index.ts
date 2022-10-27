@@ -11,7 +11,7 @@ const product: { name: string; brand: string; price: number; id: number }[] = [
     name: "Galletitas",
     brand: "Terrabusi",
     price: 100,
-    id: 123456
+    id: 1234
   },
 ];
 
@@ -28,7 +28,7 @@ app.post("/product", (req, res) => {
   
   try {
     if (!name || !brand) throw new Error("che, pasame el name y marca");
-    product.push({ name, brand, price, id: Math.floor(Math.random()*100) });
+    product.push({ name, brand, price, id: Math.floor(Math.random()*10000) });
     res.status(200).json(product.slice(-1));
   } catch (err) {
     return res.status(400).json({ message: err.message });
