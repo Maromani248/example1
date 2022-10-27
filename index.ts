@@ -11,7 +11,7 @@ const product: { name: string; brand: string; price: number; id: number }[] = [
     name: "Galletitas",
     brand: "Terrabusi",
     price: 100,
-    id: 123456,
+    id: 123456
   },
 ];
 
@@ -28,7 +28,7 @@ app.post("/product", (req, res) => {
   
   try {
     if (!name || !brand) throw new Error("che, pasame el name y marca");
-    product.push({ name, brand, price, id: new Date().getTime() });
+    product.push({ name, brand, price, id: Math.floor(Math.random()*100) });
     res.status(200).json(product.slice(-1));
   } catch (err) {
     return res.status(400).json({ message: err.message });
@@ -38,31 +38,31 @@ app.post("/product", (req, res) => {
 
 // PUT
 app.put("/product", (req, res) => {
-  const { name, brand, id } = req.body;
+  const { name, brand, price, id } = req.body;
   const index = product.findIndex((product) => product.id === id);
   console.log(index);
 
   if (index === -1) {
-    return res.status(400).json({message: "no se encontro el producto"});
+    return res.status(400).json({ message: "No se encontró el producto" });
   }
 
-  product[index] = { ...product[index], name, brand};
+  product[index] = { ...product[index], name, brand, price };
   res.status(200).json(product[index]);
 });
 
 // DELETE
-app.delete("/product", (_req, res) => {
-  /* let productId = req.params.productId;
-
-  product.findById(productId, (err, product) => {
-    if(err res.status(400).send({message: `Error al borrar el producto: ${err}`}
-    
-    product.remove( err => {
-      if(err) res.status(400).send({message: `Error al borrar el producto: ${err}`})
-      res.status(200).send({message: 'El producto ha sido eliminado'});
-    })   
-  }) */
-  res.status(200).json({name: "maria"});
+app.delete("/product", (req, res) => {
+  const { id } = req.body;
+  const index = product.findIndex((product) => product.id === id);
+  console.log(index);
+  if (index === -1) {
+    return res.status(400).json({ message: "No se encuentra el producto" });
+  } else {
+    product.splice(index, 1);
+    res
+      .status(200)
+      .json({ message: "El producto se ha borrado correctamente" });
+  }
 });
 
 app.listen(3000);
