@@ -22,6 +22,10 @@ app.get("/product", (_req, res) => {
   res.status(200).json(product);
 });
 
+app.get("/product/", (req, res) => {
+  res.status(200).json(product);
+});
+
 // POST
 app.post("/product", (req, res) => {
   const { name, brand, price } = req.body;
@@ -51,10 +55,11 @@ app.put("/product", (req, res) => {
 });
 
 // DELETE
-app.delete("/product", (req, res) => {
-  const { id } = req.body;
-  const index = product.findIndex((product) => product.id === id);
+app.delete("/product/:id", (req, res) => {
+  const id = req.params.id;
+  const index = product.findIndex((product) => product.id === Number(id));
   console.log(index);
+  
   if (index === -1) {
     return res.status(400).json({ message: "No se encuentra el producto" });
   } else {
