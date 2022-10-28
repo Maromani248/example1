@@ -41,9 +41,10 @@ app.post("/product", (req, res) => {
 });
 
 // PUT
-app.put("/product", (req, res) => {
-  const { name, brand, price, id } = req.body;
-  const index = product.findIndex((product) => product.id === id);
+app.put("/product/:id", (req, res) => {
+  const { name, brand, price} = req.body;
+  const id = req.params.id;
+  const index = product.findIndex((product) => product.id === Number(id));
   console.log(index);
 
   if (index === -1) {
@@ -59,7 +60,7 @@ app.delete("/product/:id", (req, res) => {
   const id = req.params.id;
   const index = product.findIndex((product) => product.id === Number(id));
   console.log(index);
-  
+
   if (index === -1) {
     return res.status(400).json({ message: "No se encuentra el producto" });
   } else {
